@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	
+	<settings> 
+        <setting name="cacheEnabled" value="true" /><!-- 全局映射器启用缓存 -->   
+        <setting name="useGeneratedKeys" value="true" /> 
+        <setting name="defaultExecutorType" value="REUSE" /> 
+    </settings>
+<!--定义mapper中使用到的对象-->
+	<typeAliases>
+		<typeAlias type="com.sdsj.audio.util.PageData" alias="pd"/>
+		<!-- 分页 -->
+		<typeAlias type="com.sdsj.audio.util.Page" alias="Page"/>
+		<!-- i -->
+		<typeAlias type="com.sdsj.audio.entity.i.systemmanage.UserManage" alias="userManage"/>
+		<typeAlias type="com.sdsj.audio.entity.i.systemmanage.RoleManage" alias="roleManage"/>
+		<typeAlias type="com.sdsj.audio.entity.i.systemmanage.JsdwzhManage" alias="jsdwzhManage"/>
+		<!-- o -->
+		<typeAlias type="com.sdsj.audio.entity.o.JcjlManage" alias="JcjlManage"/>
+		<typeAlias type="com.sdsj.audio.entity.o.JbshspjlManage" alias="JbshspjlManage"/>
+	</typeAliases>
+	
+	<plugins>
+		<plugin interceptor="com.sdsj.audio.web.common.interceptors.PagePlugin">
+			<property name="dialect" value="mysql"/>
+			<property name="pageSqlId" value=".*listPage.*"/>
+		</plugin>
+	</plugins>
+</configuration>
+	
+	

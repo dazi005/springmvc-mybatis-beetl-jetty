@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>欢迎登录后台管理系统</title>
+<link type="text/css" href="/css/style.css" rel="stylesheet" />
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/layer/layer.js"></script>
+</head>
+
+<body style="background: #1c77ac url(/images/369.png) no-repeat center top;overflow:hidden；">
+
+<div id="mainBody">
+    <div id="cloud1" class="cloud"></div>
+    <div id="cloud2" class="cloud"></div>
+</div>
+
+
+<div class="logintop">
+    <span>欢迎登录后台管理界面平台</span>
+    <ul>
+        <li><a href="/">回首页</a></li>
+    	<li><a href="/publicinquire/">公众查询</a></li>
+    	<li><a href="/notice/">公告</a></li>
+        <li><a href="#">帮助</a></li>
+        <li><a href="#">关于</a></li>
+    </ul>
+</div>
+
+<div class="loginbody">
+    <span class="systemlogo"></span>
+
+    <div class="loginbox">
+        <form id="loginform" action="/toLogin" method="post" >
+            <ul>
+                <li><input id="name" name="yhm" type="text" class="loginuser"/></li>
+                <li><input id="password" name="mm" type="password" class="loginpwd"/></li>
+                <li>
+                    <input class="loginvercode" name="code" id="code" type="text" />
+                    <div style="display: inline-block;margin-left: 10px;margin-top: 3px;">
+                        <img style="height:36px;margin-top: 5px;" id="codeImg" src=""   alt="验证码"/>
+                        <a href="login.do" style="font-size: 12.5px;display: inline-block;padding-bottom: 3px;">看不清，换一张</a> 
+                    </div>
+                </li>
+                <li style="padding-top: 0px;">
+                    <input name="" type="submit" class="loginbtn" id="btn-login" value="登录"/>
+                    <!--<label><a href="javascript:;" id="userGuide" onclick="userGuide();">申请账户</a></label>-->
+                    <!-- <label><a href="#">忘记密码？</a></label> -->
+                    <label><a href="/o/register/register_select/">申请帐号</a></label>
+                </li>
+            </ul>
+        </form>
+
+    </div>
+</div>
+<!--  
+<div class="loginbm">版权所有 2015</div>
+-->
+<div class="loginbm">版权所有 2015</div>
+<script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+<!--  <script  type="text/javascript" src="/js/cloud.js"></script> -->
+<script type="text/javascript" src="/js/layer/layer.js"></script>
+
+<script type="text/javascript">   
+    window.login = function(e) {
+        var name = $('#name').val();
+        var password = $('#password').val();
+        var code=$("#code").val();
+        $.post("/toLogin", {"yhm": name, "mm": password,"code":code}, function(data) {
+        	if(data.message!=null&&data.message!=""){
+        		layer.msg(data.message);
+        		changeCode();
+        	}else if(data.url!=null&&data.url!=""){
+        		window.location.href = data.url;
+        	}else{
+        		layer.msg("系统异常，请重新登录！");
+        		changeCode();
+        	}
+           /* if (data.message == "success") {
+                if ("admin" == data.username || "经办人" == data.username || "审核人" == data.username || "审批人" == data.username) {
+                    url = "/i/";
+                } else if("窗口角色" == data.username || "窗口工程案经办人" == data.username || "窗口规划案经办人" == data.username || "窗口声像档案经办人" == data.username) {
+                	 url = "/i/ckjs/work_bench/tomain";
+                } else if("外部数据方经办人" == data.username || "外部数据方审核人" == data.username) {
+               	 url = "/o/file_finishing_apply/tostudy/";
+                } else if("声像经办人" == data.username || "声像审核人" == data.username || "声像审批人" == data.username || "编研声像科" == data.username) {
+                  	 url = "/s/";
+                } else {
+                    url = "/o/";
+                }
+                window.location.href = url;
+            }*/
+        }, "json").fail(function() {
+            layer.msg("系统异常，请稍后再试。");
+        });
+        e && e.stopPropagation();
+        return false;
+    };
+    $(function () {
+        $('.loginbox').css({'position': 'absolute', 'left': ($(window).width() - 692) / 2});
+        $(window).resize(function () {
+            $('.loginbox').css({'position': 'absolute', 'left': ($(window).width() - 692) / 2});
+        });
+        $("#loginform").on("submit", login);
+    });
+	$(document).ready(function() {
+		changeCode();
+		$("#codeImg").bind("click", changeCode);
+	});
+	$(document).keyup(function(event) {
+		if (event.keyCode == 13) {
+			$("#to-recover").trigger("click");
+		}
+	});
+	function genTimestamp() {
+		var time = new Date();
+		return time.getTime();
+	}
+
+	function changeCode() {
+		$("#codeImg").attr("src", "/code.do?t=" + genTimestamp());
+	}
+
+</script>
+
+</body>
+
+</html>
